@@ -112,7 +112,7 @@
                             <label for="InputRoles">الوظائف</label>
                             <select id="InputRoles" class="form-control multiple @error('roles') is-invalid @enderror" multiple="multiple" name="roles[]">
                                 @foreach ($roles as $role)
-                                    <option value="{{ $role }}">{{ $role }}</option>
+                                    <option value="{{ $role }}">{{ __($role) }}</option>
                                 @endforeach
                             </select>
                             @error('roles')

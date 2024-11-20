@@ -113,7 +113,7 @@
                                     @if ($user->hasRole($role))
                                         <option value="{{ $role }}" selected>{{ $role }}</option>
                                     @else
-                                        <option value="{{ $role }}">{{ $role }}</option>
+                                        <option value="{{ $role }}">{{ __($role) }}</option>
                                     @endif
                                 @endforeach
                             </select>
