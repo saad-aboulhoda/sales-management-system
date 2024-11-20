@@ -1,4 +1,9 @@
 {
     "Admin": "مدير",
-    "Invoice Manager": "مدير الفواتير"
+    "Invoice Manager": "مدير الفواتير",
+    "Name": "الاسم",
+    "Logo": "الشعار",
+    "Email": "البريد الالكتروني",
+    "Phone number": "رقم الهاتف",
+    "Address": "العنوان"
 }
