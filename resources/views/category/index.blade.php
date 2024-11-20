@@ -75,14 +75,14 @@
                                         </div>
                                         <div class="category-action">
                                             @can('category-edit')
-                                                <a class="edit-caregory-btn"
-                                                   href="{{ route('category.edit', $category->id) }}"
-                                                   class="btn btn-primary"><i class="fa fa-edit m-0"></i></a>
+                                                <a href="{{ route('category.edit', $category->id) }}"
+                                                   class="edit-caregory-btn btn btn-primary"><i
+                                                        class="fa fa-edit m-0"></i></a>
                                             @endcan
                                             @can('category-delete')
-                                                <button class="delete-caregory-btn"
-                                                        onclick="deleteTag({{ $category->id }})"
-                                                        class="btn btn-danger"><i class="fa fa-trash m-0"></i></button>
+                                                <button onclick="deleteTag({{ $category->id }})"
+                                                        class="delete-caregory-btn btn btn-danger"><i
+                                                        class="fa fa-trash m-0"></i></button>
                                                 <form id="delete-form-{{ $category->id }}"
                                                       action="{{ route('category.destroy', $category->id) }}"
                                                       method="POST"
