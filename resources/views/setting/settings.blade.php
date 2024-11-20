@@ -1,5 +1,4 @@
 @extends('layouts.master')
-
 @section('title', 'الإعدادات  | ')
 @section('content')
     @include('partials.header')
@@ -35,18 +34,56 @@
                         @csrf
                         <h4>معلومات الشركة</h4>
                         <div class="row">
-                            @foreach($settings as $setting)
-                                <div class="form-group col-lg-6">
-                                    <label for="{{ $setting->option_name  }}">{{ __($setting->option_name)  }}</label>
-                                    <input value="{{ $setting->value  }}" name="f_name" class="form-control"
+                            @if($setting = $settings->where('option_name', 'name')->first())
+                                <div class="form-group col-lg-12">
+                                    <label for="{{ $setting->option_name }}">{{ __("Name")  }}</label>
+                                    <input value="{{ $setting->option_value  }}" name="{{ $setting->option_name }}"
+                                           class="form-control"
                                            id="{{ $setting->option_name }}"
                                            type="text">
                                 </div>
-                            @endforeach
+                            @endif
+                            @if($setting = $settings->where('option_name', 'logo')->first())
+                                <div class="form-group col-lg-12">
+                                    <label for="{{ $setting->option_name }}">{{ __("Logo")  }}</label>
+                                    <input value="{{ $setting->option_value  }}" name="{{ $setting->option_name }}"
+                                           class="form-control"
+                                           id="{{ $setting->option_name }}"
+                                           type="file">
+                                </div>
+                            @endif
+                            @if($setting = $settings->where('option_name', 'phone_number')->first())
+                                <div class="form-group col-lg-12">
+                                    <label for="{{ $setting->option_name }}">{{ __("Phone number")  }}</label>
+                                    <input value="{{ $setting->option_value  }}" name="{{ $setting->option_name }}"
+                                           class="form-control"
+                                           id="{{ $setting->option_name }}"
+                                           type="text">
+                                </div>
+                            @endif
+                            @if($setting = $settings->where('option_name', 'email')->first())
+                                <div class="form-group col-lg-12">
+                                    <label for="{{ $setting->option_name }}">{{ __("Email")  }}</label>
+                                    <input value="{{ $setting->option_value  }}" name="{{ $setting->option_name }}"
+                                           class="form-control"
+                                           id="{{ $setting->option_name }}"
+                                           type="email">
+                                </div>
+                            @endif
+                            @if($setting = $settings->where('option_name', 'address')->first())
+                                <div class="form-group col-lg-12">
+                                    <label for="{{ $setting->option_name }}">{{ __("Address")  }}</label>
+                                    <textarea name="{{ $setting->option_name }}"
+                                              class="form-control"
+                                              id="{{ $setting->option_name }}">
+                                        {{ $setting->option_value  }}
+                                    </textarea>
+                                </div>
+                            @endif
                         </div>
                         <div class="form-group">
                             <button class="btn btn-primary" type="submit"><i
-                                    class="fa fa-fw fa-lg fa-check-circle"></i>تعديل
+                                    class="fa fa-fw fa-lg fa-check-circle"></i>حفظ
                             </button>
                         </div>
                     </form>

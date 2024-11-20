@@ -14,6 +14,7 @@ class SettingController extends Controller
         $this->middleware('auth');
         $this->middleware(['permission:settings'], ['only' => ['settings', 'save']]);
     }
+
     /**
      * Display the specified resource.
      */
@@ -28,19 +29,15 @@ class SettingController extends Controller
      */
     public function save(Request $request): RedirectResponse
     {
-        $request->validate([
-            'option_name.*' => 'required|unique:settings,option_name',
-            'option_value.*' => 'required|min:3',
-        ], [], [
-            'option_value' => 'القيمة',
-        ]);
-
-        foreach ($request->option_name as $key => $name) {
+        $input = $request->except('_token');
+        foreach ($input as $name => $value) {
             $setting = Setting::where('option_name', $name)->first();
-            $setting->value = $request->option_value[$key];
-            $setting->save();
+            if ($setting) {
+                $setting->option_value = $value;
+                $setting->save();
+            }
         }
 
-        return redirect()->route('setting.show')->with('success', 'تم حفظ الإعدادات بنجاح');
+        return redirect()->route('setting.settings')->with('success', 'تم حفظ الإعدادات بنجاح');
     }
 }

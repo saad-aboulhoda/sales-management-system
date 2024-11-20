@@ -15,23 +15,23 @@ class SettingsTableSeeder extends Seeder
     {
         DB::table('settings')->insert([
             [
-                'option_name' => 'Name',
+                'option_name' => 'name',
                 'option_value' => '',
             ],
             [
-                'option_name' => 'Logo',
+                'option_name' => 'logo',
                 'option_value' => '',
             ],
             [
-                'option_name' => 'Phone number',
+                'option_name' => 'phone_number',
                 'option_value' => '',
             ],
             [
-                'option_name' => 'Email',
+                'option_name' => 'email',
                 'option_value' => '',
             ],
             [
-                'option_name' => 'Address',
+                'option_name' => 'address',
                 'option_value' => '',
             ],
         ]);
