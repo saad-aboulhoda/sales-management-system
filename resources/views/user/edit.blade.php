@@ -111,7 +111,7 @@
                             <select id="InputRoles" class="form-control multiple @error('roles') is-invalid @enderror" multiple="multiple" name="roles[]">
                                 @foreach ($roles as $role)
                                     @if ($user->hasRole($role))
-                                        <option value="{{ $role }}" selected>{{ $role }}</option>
+                                        <option value="{{ $role }}" selected>{{ __($role) }}</option>
                                     @else
                                         <option value="{{ $role }}">{{ __($role) }}</option>
                                     @endif
