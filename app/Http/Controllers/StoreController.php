@@ -13,6 +13,10 @@ class StoreController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(['permission:store-list|store-create|store-edit|store-delete'], ['only' => ['index']]);
+        $this->middleware(['permission:store-create'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:store-edit'], ['only' => ['edit', 'update']]);
+        $this->middleware(['permission:store-delete'], ['only' => ['destroy']]);
     }
 
     /**
