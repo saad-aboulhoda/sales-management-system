@@ -44,6 +44,7 @@ class RolesTableSeeder extends Seeder
         'user-create',
         'user-edit',
         'user-delete',
+        'settings'
     ];
     private $invoiceManagerPermissions = [
         'category-list',

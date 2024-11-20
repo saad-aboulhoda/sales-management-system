@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         StoresTableSeeder::class,
         SuppliersTableSeeder::class,
         ProductsTableSeeder::class,
+        SettingsTableSeeder::class
     ];
 
     /**
