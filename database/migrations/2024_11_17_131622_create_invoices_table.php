@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('customer_id');
             $table->string('total');
+            $table->boolean('status')->default(true);
             $table->foreign('customer_id')
                 ->references('id')->on('customers')
                 ->onDelete('cascade');
