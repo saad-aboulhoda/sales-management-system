@@ -75,9 +75,7 @@
                                     <label for="{{ $setting->option_name }}">{{ __("Address")  }}</label>
                                     <textarea name="{{ $setting->option_name }}"
                                               class="form-control"
-                                              id="{{ $setting->option_name }}">
-                                        {{ $setting->option_value  }}
-                                    </textarea>
+                                              id="{{ $setting->option_name }}">{{ $setting->option_value  }}</textarea>
                                 </div>
                             @endif
                         </div>
