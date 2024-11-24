@@ -34,7 +34,7 @@ class SettingController extends Controller
         if ($request->hasFile('logo')) {
             $image = $request->file('logo');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/category/'), $imageName);
+            $image->move(public_path('images/logo/'), $imageName);
             $logo = $imageName;
         }
 
@@ -54,5 +54,26 @@ class SettingController extends Controller
         }
 
         return redirect()->route('setting.settings')->with('success', 'تم حفظ الإعدادات بنجاح');
+    }
+
+    public function deleteLogo(Request $request)
+    {
+
+        $request->validate([
+            'logo' => 'required',
+        ]);
+
+        // Delete logo image
+        $image_path = public_path('images/logo/' . $request->logo);
+        if (file_exists($image_path)) {
+            unlink($image_path);
+        }
+
+        $setting = Setting::where('option_name', 'logo')->first();
+        if ($setting) {
+            $setting->option_value = '';
+            $setting->save();
+        }
+        return redirect()->route('setting.settings')->with('success', 'تم حذف الشعار بنجاح');
     }
 }
