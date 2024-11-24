@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('supplier_id');
             $table->date('purchase_date');
             $table->double('total_price');
-            $table->boolean('status');
+            $table->boolean('status')->default(true);
             $table->foreign('supplier_id')
                 ->references('id')->on('suppliers')
                 ->onDelete('cascade');
