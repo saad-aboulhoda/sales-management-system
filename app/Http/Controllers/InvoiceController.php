@@ -78,6 +78,10 @@ class InvoiceController extends Controller
             $sale->product_id = $request->product_id[$key];
             $sale->invoice_id = $invoice->id;
             $sale->save();
+
+            $product = Product::find($product_id);
+            $product->box_qty -= $request->box_qty[$key];
+            $product->save();
         }
 
         return redirect()->back()->with('message', 'تمت إضافة الفاتورة بنجاح!');
@@ -122,6 +126,13 @@ class InvoiceController extends Controller
      */
     public function destroy(Invoice $invoice): void
     {
-        abort(404);
+        $invoice->status = false;
+        $invoice->save();
+
+        foreach ($invoice->sales as $sale) {
+            $product = $sale->product;
+            $product->box_qty += $sale->box_qty;
+            $product->save();
+        }
     }
 }
