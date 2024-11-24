@@ -21,6 +21,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->timestamps();
         });
+
+        DB::update("ALTER TABLE invoices AUTO_INCREMENT = 1000;");
     }
 
     /**
