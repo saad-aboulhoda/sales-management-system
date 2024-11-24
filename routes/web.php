@@ -38,3 +38,4 @@ Route::get('/findPrice', [InvoiceController::class, 'findPrice'])->name('findPri
 Route::get('/findPricePurchase', [PurchaseController::class, 'findPricePurchase'])->name('findPricePurchase');
 Route::get('/settings', [SettingController::class, 'settings'])->name('setting.settings');
 Route::post('/settings', [SettingController::class, 'save'])->name('setting.save');
+Route::delete('/settings', [SettingController::class, 'deleteLogo'])->name('setting.delete.logo');
