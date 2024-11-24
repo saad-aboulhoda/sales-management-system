@@ -29,11 +29,26 @@ class SettingController extends Controller
      */
     public function save(Request $request): RedirectResponse
     {
+
+        $logo = '';
+        if ($request->hasFile('logo')) {
+            $image = $request->file('logo');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/category/'), $imageName);
+            $logo = $imageName;
+        }
+
         $input = $request->except('_token');
         foreach ($input as $name => $value) {
             $setting = Setting::where('option_name', $name)->first();
             if ($setting) {
-                $setting->option_value = $value;
+                if ($name == 'logo') {
+                    if (!empty($logo)) {
+                        $setting->option_value = $logo;
+                    }
+                } else {
+                    $setting->option_value = $value;
+                }
                 $setting->save();
             }
         }
