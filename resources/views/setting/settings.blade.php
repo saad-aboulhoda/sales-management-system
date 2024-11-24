@@ -51,6 +51,21 @@
                                            id="{{ $setting->option_name }}"
                                            type="file">
                                 </div>
+                                @if($globalSettings->get('logo'))
+                                    <div class="form-group col-lg-12">
+                                        <a target="_blank"
+                                           href="{{ asset('images/logo/' . $globalSettings->get('logo')) }}">الشعار
+                                            الحالي</a>
+                                        <span> - </span>
+                                        <form method="POST" action="{{ route('setting.delete.logo') }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="logo"
+                                                   value="{{ $globalSettings->get('logo')  }}">
+                                            <button style="border: none; outline: none; background-color: transparent; cursor: pointer" type="submit" class="text-danger">حذف</button>
+                                        </form>
+                                    </div>
+                                @endif
                             @endif
                             @if($setting = $settings->where('option_name', 'phone_number')->first())
                                 <div class="form-group col-lg-12">
