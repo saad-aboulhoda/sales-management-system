@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Setting;
 use App\Models\Supplier;
 use App\Models\User;
 use Carbon\Carbon;
@@ -82,6 +83,9 @@ class HomeController extends Controller
         $lastWeekSales = Sale::whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])
             ->sum('qty');
 
+        // Setting options
+        $settings = Setting::all();
+
         return view('home', [
             'monthlySales' => $formattedMonthlySales,
             'formattedTopSales' => $formattedTopSales,
@@ -93,6 +97,7 @@ class HomeController extends Controller
             'yesterdaySales' => $yesterdaySales,
             'thisWeekSales' => $thisWeekSales,
             'lastWeekSales' => $lastWeekSales,
+            'settings' => $settings,
         ]);
     }
 
