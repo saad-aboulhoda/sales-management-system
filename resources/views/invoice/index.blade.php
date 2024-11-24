@@ -46,7 +46,7 @@
                             <tbody>
 
                             @foreach ($invoices as $invoice)
-                                <tr>
+                                <tr style="@if ($invoice->status) background-color: #28a74545; @else background-color: #dc354545; @endif">
                                     <td>{{ $invoice->id }}</td>
                                     <td>{{ $invoice->customer->name }}</td>
                                     <td>{{ $invoice->created_at->format('Y-m-d') }}</td>
