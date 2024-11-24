@@ -67,7 +67,6 @@ class PurchaseController extends Controller
         $purchase->supplier_id = $request->supplier_id;
         $purchase->purchase_date = $request->date;
         $purchase->total_price = $request->price;
-        $purchase->status = true;
 
         $purchase->save();
 
