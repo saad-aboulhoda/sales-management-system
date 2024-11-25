@@ -32,10 +32,10 @@
         @role('Admin')
         <div class="col-md-6 col-xl-3">
             <div class="widget-small warning coloured-icon">
-                <i class="icon fa fa-truck fa-3x"></i>
+                <i class="icon fa fa-usd fa-3x"></i>
                 <div class="info">
-                    <h4>الموردين</h4>
-                    <p><b>{{ $totalSuppliers }}</b></p>
+                    <h4>الدخل الصافي</h4>
+                    <p><b>{{ $totalIncome }} درهم</b></p>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="widget-small danger coloured-icon">
                 <i class="icon fa fa-file fa-3x"></i>
                 <div class="info">
-                    <h4>الفوانير</h4>
+                    <h4>الفواتير</h4>
                     <p><b>{{ $totalInvoices }}</b></p>
                 </div>
             </div>
