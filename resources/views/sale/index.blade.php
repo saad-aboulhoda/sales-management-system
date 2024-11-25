@@ -41,7 +41,7 @@
                             </thead>
                             <tbody>
             @foreach($sales as $sale)
-                <tr>
+                <tr style="@if ($sale->invoice->status) background-color: #28a74545; @else background-color: #dc354545; @endif">
                     <td>{{ $sale->product->name }}</td>
                     <td>{{ $sale->qty }}</td>
                     <td>{{ $sale->price }}</td>
