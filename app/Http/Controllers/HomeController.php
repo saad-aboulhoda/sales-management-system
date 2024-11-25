@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\Setting;
 use App\Models\Supplier;
@@ -37,8 +38,17 @@ class HomeController extends Controller
         $totalSuppliers = Supplier::count();
         $totalInvoices = Invoice::count();
 
+        // Total Income = Total Sales - Total Purchases
+        $totalIncome = Sale::whereNotIn('invoice_id', DB::table('invoices')
+            ->select('id')->where('status', '=', 0))
+            ->sum('amount');
+        $totalPurchases = Purchase::where('status', '=', 1)->sum('total_price');
+        $totalIncome -= $totalPurchases;
+
         // Fetch monthly sales data from the sales table
         $monthlySales = Sale::selectRaw('SUM(qty) as total_amount, MONTH(created_at) as month')
+            ->whereNotIn('invoice_id', DB::table('invoices')
+                ->select('id')->where('status', '=', 0))
             ->groupBy(DB::raw('MONTH(created_at)'))
             ->get();
 
@@ -51,6 +61,8 @@ class HomeController extends Controller
         }
 
         $topSales = Sale::select('product_id', DB::raw('SUM(qty) as total_sales'))
+            ->whereNotIn('invoice_id', DB::table('invoices')
+                ->select('id')->where('status', '=', 0))
             ->groupBy('product_id')
             ->orderByDesc('total_sales')
             ->take(5)
@@ -72,15 +84,23 @@ class HomeController extends Controller
         $yesterday = Carbon::yesterday()->toDateString();
 
         // Query sales data for today and yesterday
-        $todaySales = Sale::whereDate('created_at', $today)->sum('qty');
-        $yesterdaySales = Sale::whereDate('created_at', $yesterday)->sum('qty');
+        $todaySales = Sale::whereNotIn('invoice_id', DB::table('invoices')
+            ->select('id')->where('status', '=', 0))
+            ->whereDate('created_at', $today)->sum('qty');
+        $yesterdaySales = Sale::whereNotIn('invoice_id', DB::table('invoices')
+            ->select('id')->where('status', '=', 0))
+            ->whereDate('created_at', $yesterday)->sum('qty');
 
         // Fetch this week's sales
-        $thisWeekSales = Sale::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        $thisWeekSales = Sale::whereNotIn('invoice_id', DB::table('invoices')
+            ->select('id')->where('status', '=', 0))
+            ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
             ->sum('qty');
 
         // Fetch last week's sales
-        $lastWeekSales = Sale::whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])
+        $lastWeekSales = Sale::whereNotIn('invoice_id', DB::table('invoices')
+            ->select('id')->where('status', '=', 0))
+            ->whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])
             ->sum('qty');
 
         // Setting options
@@ -98,6 +118,7 @@ class HomeController extends Controller
             'thisWeekSales' => $thisWeekSales,
             'lastWeekSales' => $lastWeekSales,
             'settings' => $settings,
+            'totalIncome' => $totalIncome
         ]);
     }
 
