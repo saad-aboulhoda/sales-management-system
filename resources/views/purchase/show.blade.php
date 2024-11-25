@@ -20,62 +20,65 @@
                     <section class="invoice">
                         <div class="row mb-4">
                             <div class="col-6">
-                                <h2 class="page-header"><i class="fa fa-globe"></i> Sales ERP</h2>
+                                @if ($globalSettings->get('logo'))
+                                    <img src="{{ asset('images/logo/' . $globalSettings->get('logo')) }}" alt="logo"
+                                         style="width: 100px; height: 100px;">
+                                @else
+                                    <h2 class="page-header" style="text-transform: uppercase; margin-inline-end: 6px"><i
+                                            class="fa fa-file"></i> {{ $globalSettings->get('name') ?? 'Name'  }}</h2>
+                                @endif
                             </div>
                             <div class="col-6">
-                                <h5 class="text-right">Date: {{ $purchase->created_at->format('Y-m-d') }}</h5>
+                                <h5 class="text-right">التاريخ: {{ $purchase->created_at->format('Y-m-d') }}</h5>
                             </div>
                         </div>
                         <div class="row invoice-info">
-                            <div class="col-4">From
-                                <address><strong>Sales ERP.</strong><br>Tongi<br>Gazipur<br>Email: hello@saleserp.com
-                                </address>
-                            </div>
-                            <div class="col-4">To
+                            <div class="col-4">من
                                 <address>
-                                    <strong>{{ $purchase->supplier->name }}</strong><br>{{ $purchase->supplier->address }}<br>Phone:
-                                    {{ $purchase->supplier->mobile }}<br>Email: {{ $purchase->supplier->email }}
-                                </address>
+                                    <strong>{{$purchase->supplier->name}}</strong><br>{{$purchase->supplier->address}}<br>{{$purchase->supplier->mobile}}
+                                    <br></address>
                             </div>
-                            <div class="col-4"><b>Purchase #{{ $purchase->id }}</b><br><br><b>Order ID:</b>
-                                4F3S8J<br><b>Payment Due:</b> {{ $purchase->purchase_date }}<br><b>Account:</b> 968-34567
+                            <div class="col-4">إلى
+                                <address><strong style="text-transform: uppercase">{{ $globalSettings->get('name') ?? 'الاسم'  }}</strong><br>{{ $globalSettings->get('address') ?? 'العنوان'  }}<br>{{ $globalSettings->get('phone_number') ?? 'رقم الهاتف'  }}<br>{{ $globalSettings->get('email') ?? 'البريد الالكتروني'  }}</address>
                             </div>
+                            <div class="col-4"><b>الفاتورة #{{$purchase->id}}</b><br><br></div>
                         </div>
                         <div class="row">
                             <div class="col-12 table-responsive">
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Qty</th>
-                                            <th>Price</th>
-                                            <th>Amount</th>
-                                        </tr>
+                                    <tr>
+                                        <th>المنتج</th>
+                                        <th>عدد العلب</th>
+                                        <th>ثمن العلبة</th>
+                                        <th>المبلغ</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($purchase->products as $product)
-                                            <tr>
-                                                <td>{{ $product->product->name }}</td>
-                                                <td>{{ $product->box_qty }}</td>
-                                                <td>{{ $product->box_price }}</td>
-                                                <td>{{ $product->total_price }}</td>
-                                            </tr>
-                                        @endforeach
+                                    @foreach ($purchase->products as $product)
+                                        <tr>
+                                            <td>{{ $product->product->name }}</td>
+                                            <td>{{ $product->box_qty }}</td>
+                                            <td>{{ $product->box_price }}</td>
+                                            <td>{{ $product->total_price }}</td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                     <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td><b>Total</b></td>
-                                            <td><b class="total">{{ $purchase->total_price }}</b></td>
-                                        </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><b>المجموع</b></td>
+                                        <td><b class="total">{{ $purchase->total_price }}</b></td>
+                                    </tr>
                                     </tfoot>
                                 </table>
                             </div>
                         </div>
                         <div class="row d-print-none mt-2">
-                            <div class="col-12 text-right"><a class="btn btn-primary" href="javascript:window.print();"
-                                    target="_blank"><i class="fa fa-print"></i> Print</a></div>
+                            <div class="col-12 text-right"><a class="btn btn-primary" href="javascript:void(0);"
+                                                              onclick="window.print()"><i class="fa fa-print"></i> اطبع</a>
+                            </div>
                         </div>
                     </section>
                 </div>
