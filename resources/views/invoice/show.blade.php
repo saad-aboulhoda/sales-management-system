@@ -42,7 +42,7 @@
                                     <strong>{{$invoice->customer->name}}</strong><br>{{$invoice->customer->address}}<br>{{$invoice->customer->mobile}}
                                     <br>{{$invoice->customer->email}}</address>
                             </div>
-                            <div class="col-4"><b>الفاتورة #{{1000+$invoice->id}}</b><br><br></div>
+                            <div class="col-4"><b>الفاتورة #{{$invoice->id}}</b><br><br></div>
                         </div>
                         <div class="row">
                             <div class="col-12 table-responsive">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="row d-print-none mt-2">
                             <div class="col-12 text-right"><a class="btn btn-primary" href="javascript:void(0);"
-                                                              onclick="printInvoice();"><i class="fa fa-print"></i>
+                                                              onclick="window.print();"><i class="fa fa-print"></i>
                                     اطبع</a></div>
                         </div>
                     </section>
@@ -95,13 +95,6 @@
             </div>
         </div>
     </main>
-
-
-    <script>
-        function printInvoice() {
-            window.print();
-        }
-    </script>
 
 @endsection
 @push('js')
