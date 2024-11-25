@@ -119,7 +119,7 @@ class PurchaseController extends Controller
         $purchase->save();
 
         foreach ($purchase->products as $product) {
-            $theProduct = Product::find($product->id);
+            $theProduct = $product->product;
             $theProduct->box_qty -= $product->box_qty;
             $theProduct->save();
         }
