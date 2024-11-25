@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -42,7 +43,7 @@ class CategoryController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|min:3|unique:categories|regex:/^[a-zA-ZÀ-ú ]+$/',
+            'name' => 'required|min:3|unique:categories',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ], [], [
             'image' => 'صورة التصنيف'
@@ -50,7 +51,7 @@ class CategoryController extends Controller
 
         $category = new Category();
         $category->name = $request->name;
-        $category->slug = str_slug($request->name);
+        $category->slug = Str::slug($request->name);
         $category->status = 1;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -85,14 +86,13 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|min:3|unique:categories|regex:/^[a-zA-ZÀ-ú ]+$/',
+            'name' => 'required|min:3|unique:categories',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ], [], [
             'image' => 'صورة التصنيف'
         ]);
 
         $category->name = $request->name;
-        $category->slug = str_slug($request->name);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
