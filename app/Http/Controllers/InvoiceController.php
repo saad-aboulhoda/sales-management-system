@@ -49,20 +49,36 @@ class InvoiceController extends Controller
     {
         $request->validate([
 
-            'customer_id' => 'required',
-            'product_id' => 'required',
-            'qty' => 'required|min:1',
-            'price' => 'required|min:0',
-            'dis' => 'required|min:0',
-            'amount' => 'required|min:0',
+            'customer_id' => 'required|exists:customers,id',
+            'product_id' => 'required|exists:products,id',
+            'qty' => 'required',
+            'qty.*' => 'required|numeric|min:1',
+            'price' => 'required',
+            'price.*' => 'required|numeric|min:0',
+            'dis' => 'required',
+            'dis.*' => 'required|numeric|min:0',
+            'amount' => 'required',
+            'amount.*' => 'required|numeric|min:0',
         ], [], [
             'customer_id' => 'الزبون',
             'product_id' => 'المنتج',
             'qty' => 'عدد العلب',
+            'qty.*' => 'عدد العلب',
             'price' => 'ثمن العلبة',
+            'price.*' => 'ثمن العلبة',
             'dis' => 'نسبة التخفيض',
-            'amount' => 'الثمن الكلي',
+            'dis.*' => 'نسبة التخفيض',
+            'amount' => 'الملبغ',
+            'amount.*' => 'الملبغ',
         ]);
+
+        foreach ($request->product_id as $key => $product_id) {
+            $product = Product::find($product_id);
+
+            if ($product->box_qty < $request->qty[$key]) {
+                return redirect()->back()->with('error', 'الكمية المتاحة للمنتج ' . $product->name . ' غير كافية!');
+            }
+        }
 
         $invoice = new Invoice();
         $invoice->customer_id = $request->customer_id;
@@ -80,7 +96,7 @@ class InvoiceController extends Controller
             $sale->save();
 
             $product = Product::find($product_id);
-            $product->box_qty -= $request->box_qty[$key];
+            $product->box_qty -= $request->qty[$key];
             $product->save();
         }
 
@@ -124,15 +140,17 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice): void
+    public function destroy(Invoice $invoice): RedirectResponse
     {
         $invoice->status = false;
         $invoice->save();
 
-        foreach ($invoice->sales as $sale) {
+        foreach ($invoice->sale as $sale) {
             $product = $sale->product;
-            $product->box_qty += $sale->box_qty;
+            $product->box_qty += $sale->qty;
             $product->save();
         }
+
+        return redirect()->back()->with('message', 'تم التراجع عن الفاتورة بنجاح!');
     }
 }
