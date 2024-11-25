@@ -22,12 +22,27 @@
             </div>
         @endif
 
+        @if (session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session()->get('error') }}
+            </div>
+        @endif
+
         <div class="row">
             <div class="clearix"></div>
             <div class="col-md-12">
                 <div class="tile">
                     <h3 class="tile-title">استمارة الإنشاء</h3>
                     <div class="tile-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('invoice.store') }}">
                             @csrf
                             <div class="row">
@@ -69,7 +84,8 @@
                                             <option>اختر منتج</option>
                                             @foreach ($products as $product)
                                                 <option name="product_id[]" value="{{ $product->id }}">
-                                                    {{ $product->name }}</option>
+                                                    {{ $product->name }} <span>({{ $product->box_qty }})</span>
+                                                </option>
                                             @endforeach
                                         </select></td>
                                     <td><input type="text" value="0" name="qty[]" class="form-control qty">
@@ -116,10 +132,6 @@
 @endsection
 @push('js')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-    <script src="{{ asset('/') }}js/multifield/jquery.multifield.min.js"></script>
-
-
-
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -182,21 +194,21 @@
                 var addRow = `<tr><td><select name="product_id[]" class="form-control productname">
                                                 <option>اختر منتج</option>
                                                 @foreach ($products as $product)
-                                                    <option name="product_id[]" value="{{ $product->id }}">
-                                                        {{ $product->name }}</option>
+                <option name="product_id[]" value="{{ $product->id }}">
+                                                        {{ $product->name }}<span>({{ $product->box_qty }})</span></option>
                                                 @endforeach
-                                    </select></td>
-                    <td><input type="text" value="0" name="qty[]" class="form-control qty">
-                    </td>
-                    <td><input type="text" value="0" name="price[]" class="form-control price">
-                    </td>
-                    <td><input type="text" value="0" name="dis[]" class="form-control dis">
-                    </td>
-                    <td><input type="text" value="0" name="amount[]"
-                            class="form-control amount"></td>
-                    <td><a class="btn btn-danger remove"> <i
-                                class="fa fa-remove m-0 text-white"></i></a></td>
-                </tr>`;
+                </select></td>
+<td><input type="text" value="0" name="qty[]" class="form-control qty">
+</td>
+<td><input type="text" value="0" name="price[]" class="form-control price">
+</td>
+<td><input type="text" value="0" name="dis[]" class="form-control dis">
+</td>
+<td><input type="text" value="0" name="amount[]"
+        class="form-control amount"></td>
+<td><a class="btn btn-danger remove"> <i
+            class="fa fa-remove m-0 text-white"></i></a></td>
+</tr>`;
                 $('tbody').append(addRow);
             }
 
